@@ -6,4 +6,4 @@ Follow The Steps Bellow:
 3. Run '#ffffff' npm install To Install The Dependencies.
  
 Good Luck :+1:
-Run `#ffffff`
+Run `#ffffff test`
