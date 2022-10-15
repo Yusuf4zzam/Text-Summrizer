@@ -6,3 +6,4 @@ Follow The Steps Bellow:
 3. Run '#ffffff' npm install To Install The Dependencies.
  
 Good Luck :+1:
+The background color should be `#ffffff` for light mode and `#0d1117` for dark mode.
