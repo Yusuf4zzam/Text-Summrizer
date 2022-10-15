@@ -6,6 +6,6 @@ Follow The Steps Bellow:
 3. Open The Folder On The Terminal.
 4. Run `npm install` On The Terminal To Install The Dependencies.
 5. Run `node index.js` On The Terminal To Run The Server.
-6. Then Hit This Link [The Web Page](http://localhost:3000/).
+6. Then Hit This Link [The Web Page](http://localhost:3000/) Or Open Your Browser on `localhost:3000`.
 
 Good Luck :+1:
