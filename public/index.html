@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body> 
+    <div class="settings">
+      <div class="icon"><i class="fas fa-cog"></i></div>
+      <div class="setting-container">
+        <div class="option-box"> 
+          <h4>Colors</h4>
+          <ul class="page-colors">
+            <li class="active" data-color="#ff9800"></li>
+            <li data-color="#2196F3"></li>
+            <li data-color="#F44336"></li>
+            <li data-color="#E91E63"></li>
+            <li data-color="#4CAF50"></li>
+            <li data-color="#009688"></li>
+            <li data-color="#607D8B"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box"> 
+      <div class="container"> 
+        <div class="header-content"> 
+          <h1 class="header">Summarize Text</h1>
+          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis molestias ipsam sit vitae sunt quibusdam mollitia cumque similique rem quidem?</p>
+        </div>
+        <div class="form-box">
+          <form action="">
+            <div class="buttons">
+              <label class="text-input" for="text">Enter Text</label>
+              <label class="file-label" for="file">Upload File</label>
+              <div class="file-container"> 
+                <input type="file" id="file" accept=".docx, .txt, .pdf">
+              </div>
+            </div>
+            <div class="input-container"> 
+              <textarea name="text" id="text" maxlength="3000" placeholder="Type Your Text"></textarea><span>0/3000</span>
+            </div>
+            <div class="error-handler"> 
+              <p></p>
+            </div>
+            <div class="file-details">
+              <div class="cancel-button">Cancel</div>
+              <p class="file-name"></p>
+              <p class="file-size"></p>
+            </div>
+            <div class="submit-container"> 
+              <input type="submit" value="submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="output"> 
+      <div class="content"> 
+        <p></p>
+      </div>
+      <div class="copy-download"> 
+        <div class="copy">
+          <p>Copy</p>
+        </div><a href=""> 
+          <div class="download">
+            <p>Download As Text File</p>
+          </div></a>
+      </div>
+      <div class="close-button"> <i class="fa-regular fa-circle-xmark"></i></div>
+    </div>
+    <script src="js/all.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
