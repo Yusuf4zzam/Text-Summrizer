@@ -1,0 +1,75 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+        link(rel="stylesheet", href="css/all.min.css")
+        link(rel="stylesheet", href="css/main.css")
+    body 
+        //- Loading Box
+        //- .loading 
+        //-     span 
+
+        //- Start Settings box
+        .settings
+                .icon
+                    i.fas.fa-cog
+                .setting-container
+                    .option-box 
+                        h4 Colors
+                        ul.page-colors
+                            li(data-color="#ff9800").active
+                            li(data-color="#2196F3")
+                            li(data-color="#F44336")
+                            li(data-color="#E91E63")
+                            li(data-color="#4CAF50")
+                            li(data-color="#009688")
+                            li(data-color="#607D8B")
+        
+        -// Main Box
+        .box 
+            .container 
+                .header-content 
+                    h1.header Text Summarizer
+                    p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis molestias ipsam sit vitae sunt quibusdam mollitia cumque similique rem quidem?
+                .form-box
+                    form(action="")
+                        .buttons
+                            label.text-input(for="text") Enter Text
+                            label.file-label(for="file") Upload File
+
+                            .file-container 
+                                input(type="file" id="file" accept=".docx, .txt, .pdf")
+
+                        .input-container 
+                            textarea(name="text" id= "text" maxlength= "3000" placeholder="Type Your Text")
+                            span 0/3000
+                        
+                        .error-handler 
+                            p
+
+                        .file-details
+                            .cancel-button Cancel
+                            p.file-name
+                            p.file-size
+
+                        .submit-container 
+                            input(type="submit", value="submit")
+        
+        //- The Output Box
+        .output 
+            .content 
+                p
+
+            .copy-download 
+                .copy
+                    p Copy
+                a(href="") 
+                    .download
+                        p Download As Text File
+            .close-button 
+                i(class="fa-regular fa-circle-xmark")
+        script(src="js/all.min.js")
+        script(src="js/main.js")
