@@ -8,38 +8,49 @@
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
-  <body> 
+  <body class="flex flex-center align-content-center flex-wrap">
+    <div class="loading"> <span> </span></div>
     <div class="settings">
       <div class="icon"><i class="fas fa-cog"></i></div>
       <div class="setting-container">
         <div class="option-box"> 
           <h4>Colors</h4>
-          <ul class="page-colors">
-            <li class="active" data-color="#ff9800"></li>
-            <li data-color="#2196F3"></li>
-            <li data-color="#F44336"></li>
-            <li data-color="#E91E63"></li>
-            <li data-color="#4CAF50"></li>
-            <li data-color="#009688"></li>
+          <ul class="page-colors flex align-items-center flex-wrap">
+            <li class="active" data-color="#1c2130"></li>
+            <li data-color="#292522"></li>
+            <li data-color="#2b2b2b"></li>
+            <li data-color="#353634"></li>
+            <li data-color="#4d6160"></li>
             <li data-color="#607D8B"></li>
+            <li data-color="#002c2b"></li>
+            <li data-color="#204b5e"></li>
+            <li data-color="#364461"></li>
+            <li data-color="#1f6764"></li>
+            <li data-color="#0a837f"></li>
+            <li data-color="#009688"></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="box"> 
       <div class="container"> 
-        <div class="header-content"> 
-          <h1 class="header">Summarize Text</h1>
+        <div class="header-content flex flex-center flex-wrap text-center">
+          <h1 class="header">Text Summarizer</h1>
           <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis molestias ipsam sit vitae sunt quibusdam mollitia cumque similique rem quidem?</p>
         </div>
-        <div class="form-box">
+        <div class="form-box flex flex-center flex-wrap">
           <form action="">
-            <div class="buttons">
+            <div class="buttons flex flex-center flex-wrap">
               <label class="text-input" for="text">Enter Text</label>
               <label class="file-label" for="file">Upload File</label>
-              <div class="file-container"> 
-                <input type="file" id="file" accept=".docx, .txt, .pdf">
-              </div>
+              <select name="summarizeSize" value="Medium">
+                <option value="Short">Short </option>
+                <option value="Medium" selected>Medium </option>
+                <option value="Large">Large  </option>
+              </select>
+            </div>
+            <div class="file-container"> 
+              <input type="file" id="file" accept=".txt, .pdf">
             </div>
             <div class="input-container"> 
               <textarea name="text" id="text" maxlength="3000" placeholder="Type Your Text"></textarea><span>0/3000</span>
@@ -48,11 +59,13 @@
               <p></p>
             </div>
             <div class="file-details">
-              <div class="cancel-button">Cancel</div>
+              <div class="cancel-button">
+                <button>Cancel</button>
+              </div>
               <p class="file-name"></p>
               <p class="file-size"></p>
             </div>
-            <div class="submit-container"> 
+            <div class="submit-container text-center">
               <input type="submit" value="submit">
             </div>
           </form>
@@ -60,20 +73,26 @@
       </div>
     </div>
     <div class="output"> 
-      <div class="content"> 
-        <p></p>
+      <div class="container">
+        <div class="box">
+          <div class="content">
+            <p></p>
+            <button>See More</button>
+          </div>
+          <div class="copy-download flex flex-between flex-wrap">
+            <div class="copy">
+              <p class="flex align-items-center">Copy</p>
+            </div><a class="flex" href="">
+              <div class="download">
+                <p class="flex align-items-center">Download As Text File</p>
+              </div></a>
+          </div>
+          <div class="close-button"> <i class="fa-regular fa-circle-xmark"></i></div>
+        </div>
       </div>
-      <div class="copy-download"> 
-        <div class="copy">
-          <p>Copy</p>
-        </div><a href=""> 
-          <div class="download">
-            <p>Download As Text File</p>
-          </div></a>
-      </div>
-      <div class="close-button"> <i class="fa-regular fa-circle-xmark"></i></div>
     </div>
     <script src="js/all.min.js"></script>
+    <script src="js/globalFunction.js"> </script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -7,15 +7,17 @@ app.use("/", express.static("public"));
 
 app.use(fileUpload());
 
-app.post("/extract-pdf-text", async (req, res) => {
+app.post("/extract-text", async (req, res) => {
   if (!req.files) {
     res.status(400);
     res.end();
   }
 
-  pdfParse(req.files.pdfFile).then((result) => {
-    res.send(result.text);
-  });
+  if (req.files.inputFile.mimetype == "application/pdf") {
+    pdfParse(req.files.inputFile).then((result) => {
+      res.send(result.text);
+    });
+  }
 });
 
 let port = 3000;

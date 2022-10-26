@@ -1,3 +1,19 @@
+// Get Select Box Value
+let selectBox = document.querySelector("form select");
+
+let selectBoxValue = "20";
+
+selectBox.addEventListener("change", () => {
+  selectBoxValue =
+    selectBox.value == "Short"
+      ? "10"
+      : selectBox.value == "Medium"
+      ? "20"
+      : "30";
+
+  fileSize.textContent = `Summarize Size: ${selectBoxValue} Sentences`;
+});
+
 // Settings Box
 let settingsIcon = document.querySelector(".settings .icon");
 let settingsBox = document.querySelector(".settings");
@@ -15,10 +31,17 @@ colorList.forEach((e) => {
     colorList.forEach((e) => {
       e.classList.remove("active");
     });
-  }
 
-  // Set Active Class To The Current List
-  if (localStorage.getItem("main-color")) {
+    // Set BackgroundColor For Each List
+    e.style.background = e.dataset.color;
+
+    // Change Color Vaiable Value
+    document.documentElement.style.setProperty(
+      "--main-color",
+      localStorage.getItem("main-color")
+    );
+
+    // Set Active Class To The Current List
     document
       .querySelector(`[data-color = "${localStorage.getItem("main-color")}"]`)
       .classList.add("active");
@@ -44,56 +67,28 @@ colorList.forEach((e) => {
   });
 });
 
-// Get The Data Color From Local Storage
-if (localStorage.getItem("main-color")) {
-  document.documentElement.style.setProperty(
-    "--main-color",
-    localStorage.getItem("main-color")
-  );
-}
+// Loading Box Function
+let loadingBox = document.querySelector(".loading");
 
-// Loading Box
- let loadingBox = document.querySelector(".loading");
-
-  window.addEventListener("load", () => {
+window.addEventListener("load", () => {
   loadingBox.classList.add("active");
-   setTimeout(() => loadingBox.remove(), 500);
+
+  setTimeout(() => loadingBox.remove(), 1000);
 });
 
-// Remove Active Class Function
-function removeAndAddActive(e, action) {
-  if (action == "remove") {
-    e.forEach((e) => {
-      e.classList.remove("active");
-    });
-  } else {
-    e.forEach((e) => {
-      e.classList.add("active");
-    });
-  }
-}
-
-// Cancel And Close Buttons Function
-function cancelAndClose() {
-  fileInput.value = "";
-  
-  outputContent.textContent = "";
-  
-  removeAndAddActive(
-    [fileDetails, submitButtonContainer, errorHandler, output],
-    "remove"
-  );
-}
-
 // Input Toggle
-let inputButton = document.querySelector("label.text-input");
+let inputTextBtn = document.querySelector("label.text-input");
 let inputTextContainer = document.querySelector(".input-container");
 let inputMaxLength = document.querySelector(".input-container span");
 let errorHandler = document.querySelector(".error-handler");
 let textareaValue = document.querySelector(".input-container textarea");
 
-inputButton.addEventListener("click", () => {
-  if (fileInput.files.length == 0) {
+inputTextBtn.addEventListener("click", () => {
+  output.classList.remove("active");
+
+  outputContent.classList.remove("active");
+
+  if (inputFile.files.length == 0) {
     inputTextContainer.classList.add("active");
   } else {
     errorHandler.classList.add("active");
@@ -107,6 +102,12 @@ let fileButton = document.querySelector(".file-label");
 
 fileButton.addEventListener("click", () => {
   inputTextContainer.classList.remove("active");
+
+  outputContent.classList.remove("active");
+
+  if (inputFile.files.length == 0) {
+    errorHandler.classList.remove("active");
+  }
 });
 
 let submitButtonContainer = document.querySelector(".submit-container");
@@ -123,80 +124,152 @@ textareaValue.addEventListener("input", function () {
 });
 
 // File Input Function
-let fileInput = document.querySelector(".file-container input");
+let inputFile = document.querySelector(".file-container input");
 let fileDetails = document.querySelector(".file-details");
 let fileName = document.querySelector(".file-details .file-name");
 let fileSize = document.querySelector(".file-details .file-size");
 
-fileInput.addEventListener("change", () => {
-  if (fileInput.files.length == 0) {
+inputFile.addEventListener("change", () => {
+  output.classList.remove("active");
+
+  fileDetails.classList.remove("active");
+
+  if (inputFile.files.length == 0) {
     removeAndAddActive([submitButtonContainer], "remove");
   } else {
     textareaValue.value = "";
 
-    fileName.textContent = `File Name: ${fileInput.files[0].name}`;
+    fileName.textContent = `File Name: ${inputFile.files[0].name}`;
 
-    fileSize.textContent = `File Size: ${fileInput.files[0].size}KB`;
+    fileSize.textContent = `Summarize Size: ${selectBoxValue} Sentences`;
+
+    outputContent.textContent = "";
 
     removeAndAddActive([submitButtonContainer, fileDetails], "add");
   }
 });
 
 // Submit Button Click Event
-let submitInputButton = document.querySelector(".submit-container input");
+let submitinputTextBtn = document.querySelector(".submit-container input");
 
-submitInputButton.addEventListener("click", (e) => {
+submitinputTextBtn.addEventListener("click", async (e) => {
   e.preventDefault();
 
-  let formData = new FormData();
+  let dataText;
 
-  // PDF Files
-  if (fileInput.files[0]) {
-    formData.append("pdfFile", fileInput.files[0]);
+  let finallDataText;
 
-    if (fileInput.files[0].name.slice(-3) == "pdf") {
-      fetch("/extract-pdf-text", {
-        method: "post",
+  removeAndAddActive(
+    [
+      submitButtonContainer,
+      inputTextContainer,
+      fileDetails,
+      errorHandler,
+      outputContent,
+    ],
+    "remove"
+  );
 
-        body: formData,
-      })
-        .then((res) => res.text())
-
-        .then((text) => (outputContent.textContent = text));
-    }
-
+  if (inputFile.files[0]) {
     // Text Files
-    else if (fileInput.files[0].name.slice(-3) == "txt") {
+    if (inputFile.files[0].type == "text/plain") {
       let fr = new FileReader();
 
       fr.onload = function () {
         removeAndAddActive([output], "add");
 
-        outputContent.textContent = fr.result;
+        dataText = fr.result;
+
+        let formdata = new FormData();
+        formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
+        formdata.append("txt", dataText);
+        formdata.append("sentences", selectBoxValue);
+
+        let requestOptions = {
+          method: "post",
+          body: formdata,
+          redirect: "follow",
+        };
+
+        fetch("https://api.meaningcloud.com/summarization-1.0", requestOptions)
+          .then((response) => response.text())
+          .then(
+            (result) => (outputContent.textContent = JSON.parse(result).summary)
+          );
       };
 
-      fr.readAsText(fileInput.files[0]);
+      fr.readAsText(inputFile.files[0]);
 
-      fileInput.value = "";
+      inputFile.value = "";
 
       removeAndAddActive([submitButtonContainer, fileDetails], "remove");
     }
 
-    // Docx Files
+    // PDF Or DOCX Files
     else {
+      let formData = new FormData();
+      formData.append("inputFile", inputFile.files[0]);
+
+      await fetch("/extract-text", {
+        method: "post",
+
+        body: formData,
+      })
+        .then((res) => res.text())
+        .then((data) => (dataText = data));
+
+      let formdata = new FormData();
+      formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
+      formdata.append("txt", dataText);
+      formdata.append("sentences", selectBoxValue);
+
+      let requestOptions = {
+        method: "post",
+        body: formdata,
+        redirect: "follow",
+      };
+
+      await fetch(
+        "https://api.meaningcloud.com/summarization-1.0",
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => (finallDataText = JSON.parse(result).summary));
+
+      outputContent.textContent = finallDataText;
+
+      output.classList.add("active");
     }
 
-    output.classList.add("active");
+    inputFile.value = "";
   } else {
-    output.classList.add("active");
-
     removeAndAddActive([submitButtonContainer, inputTextContainer], "remove");
 
-    outputContent.textContent = textareaValue.value;
+    let formdata = new FormData();
+    formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
+    formdata.append("txt", textareaValue.value);
+    formdata.append("sentences", selectBoxValue);
+
+    let requestOptions = {
+      method: "post",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    await fetch(
+      "https://api.meaningcloud.com/summarization-1.0",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then(
+        (result) => (outputContent.textContent = JSON.parse(result).summary)
+      );
 
     textareaValue.value = "";
 
     inputMaxLength.textContent = "0/3000";
+
+    output.classList.add("active");
   }
 });
 
@@ -220,17 +293,6 @@ outputCloseBtn.addEventListener("click", () => {
   cancelAndClose();
 });
 
-function copyDownload(e, newText, oldText) {
-  e.classList.add("active");
-
-  e.querySelector("p").textContent = newText;
-
-  setTimeout(() => {
-    e.classList.remove("active");
-    e.querySelector("p").textContent = oldText;
-  }, 2000);
-}
-
 outputDownloadBtn.addEventListener("click", () => {
   download("Summary Text.txt", outputContent.textContent);
 
@@ -245,8 +307,22 @@ outputCopyBtn.addEventListener("click", () => {
 });
 
 // Cancel Input File Function
-let cancelButton = document.querySelector(".cancel-button");
+let cancelButton = document.querySelector(".cancel-button button");
 
-cancelButton.addEventListener("click", () => {
+cancelButton.addEventListener("click", (e) => {
+  e.preventDefault();
   cancelAndClose();
+});
+
+// See More Button Function
+let seeMoreBtn = document.querySelector(".output .content button");
+
+seeMoreBtn.addEventListener("click", () => {
+  outputContent.classList.toggle("active");
+
+  if (outputContent.classList.contains("active")) {
+    seeMoreBtn.textContent = "See Less";
+  } else {
+    seeMoreBtn.textContent = "See More";
+  }
 });

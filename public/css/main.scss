@@ -1,25 +1,10 @@
+// Imprt The Fonts
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
-:root {
-  --main-color: #ff9800;
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+// Import The Global CSS Rules
+@import "./globalRules";
 
-body {
-  background: var(--main-color);
-  font-family: "Open Sans", sans-serif;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-// Loading Box
+// Loading Box Rules
 .loading {
   position: absolute;
   left: 0;
@@ -34,9 +19,10 @@ body {
     width: 50%;
     top: 0;
     height: 100%;
-    background: #190845;
+    background: var(--dark);
     transition: 0.7s;
   }
+
   &:after {
     left: 0;
   }
@@ -60,7 +46,7 @@ body {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    border: 4px solid #fff;
+    border: 4px solid var(--white);
     border-style: solid dotted solid dotted;
     position: absolute;
     left: 50%;
@@ -74,7 +60,7 @@ body {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      border: 4px solid #fff;
+      border: 4px solid var(--white);
       border-style: solid dotted solid dotted;
       position: absolute;
       left: 0;
@@ -87,6 +73,7 @@ body {
   }
 }
 
+// Rotate Left Animation Key
 @keyframes rotate-left {
   form {
     transform: rotate(0);
@@ -95,18 +82,20 @@ body {
     transform: rotate(-1turn);
   }
 }
-// start Seetings Box
+
+// Seetings Box Rules
 .settings {
   position: fixed;
   border-radius: 5px;
   padding: 20px;
-  background: #fff;
+  background: var(--white);
+  max-width: 213px;
   z-index: 999999;
   top: 50%;
   left: -212.77px;
   transform: translateY(-50%);
   transition: 0.3s;
-  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 0px 5px var(--soft-dark);
 
   // Settings On Active
   &.active {
@@ -123,11 +112,11 @@ body {
     right: -36px;
     transform: translateY(-50%);
     padding: 8px;
-    background: #fff;
+    background: var(--white);
     font-size: 22px;
     border-radius: 0 3px 3px 0;
     cursor: pointer;
-    box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 0px 5px var(--soft-dark);
   }
 
   // Option Rules
@@ -137,46 +126,38 @@ body {
         margin-bottom: 20px;
       }
       h4 {
-        color: #222;
+        color: var(--dark);
         margin-bottom: 10px;
       }
       ul {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        gap: 5px;
+        gap: 10px;
         li {
+          position: relative;
           width: 20px;
           height: 20px;
           border-radius: 50%;
           cursor: pointer;
-          opacity: 0.5;
           transition: 0.3s;
+          &:after {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: bold;
+            font-size: 14px;
+            color: #fff;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0) rotate(360deg);
+            opacity: 0;
+            transition: 0.3s;
+          }
           &.active {
-            opacity: 1;
+            &:after {
+              opacity: 1;
+              transform: translate(-50%, -50%) scale(1) rotate(0);
+            }
             width: 22px;
             height: 22px;
-          }
-          &:first-of-type {
-            background: #ff9800;
-          }
-          &:nth-of-type(2) {
-            background: #2196f3;
-          }
-          &:nth-of-type(3) {
-            background: #f44336;
-          }
-          &:nth-of-type(4) {
-            background: #e91e63;
-          }
-          &:nth-of-type(5) {
-            background: #4caf50;
-          }
-          &:nth-of-type(6) {
-            background: #009688;
-          }
-          &:nth-of-type(7) {
-            background: #607d8b;
           }
         }
       }
@@ -195,55 +176,54 @@ body {
 }
 
 // Container Rules
-.container {
-  padding: 0 15px;
-  .header-content {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-    color: #fff;
-    margin-bottom: 40px;
-    h1 {
-      width: 100%;
-      font-size: 2.5em;
-    }
-    p {
-      width: 70%;
-      line-height: 1.5;
-      font-size: 15px;
-    }
+.header-content {
+  color: var(--white);
+  margin-bottom: 40px;
+  h1 {
+    width: 100%;
+    font-size: 2.5em;
+  }
+  p {
+    width: 70%;
+    line-height: 1.5;
+    font-size: 15px;
   }
 }
 
 // Form Box Rules
 .form-box {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
   form {
     width: 70%;
 
-    // Labels & File Input Rules
+    // Select Box Rules
+    select {
+      option {
+        color: var(--dark);
+        font-size: 15px;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+
+    // Labels Buttons Rules
     .buttons {
-      display: flex;
-      justify-content: center;
       gap: 30px;
       margin-bottom: 30px;
 
       label,
-      button {
+      button,
+      select {
         display: inline-block;
-        border: 1px solid #fff;
-        text-align: center;
+        border: 1px solid var(--white);
         padding: 15px;
-        color: #fff;
+        color: var(--white);
         font-size: 20px;
         letter-spacing: 1px;
         background: transparent;
         border-radius: 3px;
         font-weight: 600;
+        user-select: none;
         transition: 0.3s;
         cursor: pointer;
         transform-style: preserve-3d;
@@ -251,13 +231,11 @@ body {
           transform: perspective(100px) translateZ(5px);
         }
       }
-      .file-container {
-        input {
-          opacity: 0;
-          width: 0;
-          height: 0;
-        }
-      }
+    }
+
+    // File Container
+    .file-container {
+      display: none;
     }
 
     // Input Text Rules
@@ -275,36 +253,41 @@ body {
         position: absolute;
         right: 0;
         bottom: 5px;
-        color: #fff;
+        color: var(--white);
       }
 
+      // The Main Text Input
       textarea {
         width: 100%;
         min-height: calc(100% - 35px);
         resize: none;
         background: transparent;
-        border: 1px solid #fff;
-        color: #fff;
+        border: 1px solid var(--white);
+        color: var(--white);
         padding: 10px;
         border-radius: 5px;
+
+        // Placeholder Rules
         &::placeholder {
-          color: #fff;
+          color: var(--white);
         }
 
+        // Scrollbar Rules
         &::-webkit-scrollbar {
           width: 14px;
         }
 
         &::-webkit-scrollbar-track {
-          box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-          background: #fff;
+          box-shadow: inset 0 0 6px var(--soft-dark);
+          background: var(--white);
         }
 
         &::-webkit-scrollbar-thumb {
           background-color: var(--main-color);
-          border: 2px solid #fff;
+          border: 2px solid var(--white);
         }
 
+        // Input In Focus
         &:focus {
           outline: none;
         }
@@ -313,21 +296,14 @@ body {
 
     // Submit Box Rules
     .submit-container {
-      text-align: center;
-      transform: scale(0);
-      opacity: 0;
-      transition: 0.3s;
-      &.active {
-        transform: scale(1);
-        opacity: 1;
-      }
+      @extend %resized-box;
       input {
-        color: #fff;
+        color: var(--white);
         padding: 10px 30px;
         font-size: 20px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        border: 1px solid #fff;
+        border: 1px solid var(--white);
         border-radius: 3px;
         background: transparent;
         cursor: pointer;
@@ -337,45 +313,53 @@ body {
       }
     }
 
+    // Files Details & Error Hnadler Rules
     .file-details,
     .error-handler {
       border-radius: 5px;
       letter-spacing: 1px;
       font-weight: 600;
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-      transition: 0.3s;
+      @extend %resized-box;
       &.active {
-        opacity: 1;
         padding: 15px;
-        height: fit-content !important;
       }
     }
 
+    // Error Hnadler Rules
     .error-handler {
       background: #ffd88a;
-      color: #333;
+      color: #222;
       &.active {
         margin-bottom: 15px;
       }
     }
 
+    // File Details Rules
     .file-details {
-      background: rgba(0, 0, 0, 0.2);
+      background: var(--soft-dark);
       color: #fff;
-      margin-bottom: 30px;
+      &.active {
+        margin-bottom: 30px;
+      }
       .cancel-button {
-        float: right;
-        padding: 5px 10px;
-        background: #f00;
-        width: fit-content;
-        border-radius: 3px;
-        font-size: 14px;
-        transition: 0.3s;
-        cursor: pointer;
-        &:hover {
-          transform: perspective(100px) translateZ(5px);
+        text-align: right;
+        button {
+          padding: 5px 10px;
+          background: #f00;
+          color: #fff;
+          border-radius: 3px;
+          font-size: 14px;
+          border: none;
+          transition: 0.3s;
+          cursor: pointer;
+
+          &:focus {
+            outline: none;
+          }
+
+          &:hover {
+            transform: perspective(100px) translateZ(5px);
+          }
         }
       }
       p {
@@ -388,56 +372,71 @@ body {
 
 // Output Rules
 .output {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-wrap: wrap;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 0 15px;
-  transform: scale(0);
-  opacity: 0;
-  transition: 0.5s;
-  &.active {
-    transform: scale(1);
-    opacity: 1;
+  width: 70%;
+  @extend %resized-box;
+  .container {
+    width: 100%;
+  }
+  .box {
+    position: relative;
+    padding: 30px;
+    background: var(--soft-dark);
+    border-radius: 5px;
   }
   .close-button {
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 8px;
+    top: 3px;
     font-size: 30px;
-    color: #fff;
+    color: var(--white);
     cursor: pointer;
   }
   .content {
-    width: 70%;
-    height: 70%;
-    background: #fff;
+    width: calc(100% - 30px);
+    background: var(--white);
     padding: 30px;
     font-size: 15px;
     line-height: 1.5;
     letter-spacing: 1px;
     font-weight: 600;
-    color: #222;
+    color: var(--dark);
     border-radius: 5px;
-    overflow-y: scroll;
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 20px;
+
+      &.active {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      color: #673ab7;
+      text-decoration: underline;
+      float: right;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        color: #3f51b5;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
   }
   .copy-download {
-    width: 70%;
-    padding: 25px 10px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    width: calc(100% - 30px);
+    padding: 25px 10px 0;
     gap: 30px;
-    color: #fff;
+    color: var(--white);
     a {
-      text-decoration: none;
-      color: #fff;
+      color: var(--white);
     }
     .copy,
     .download {
@@ -450,8 +449,6 @@ body {
       cursor: pointer;
       user-select: none;
       p {
-        display: flex;
-        align-items: center;
         gap: 5px;
         &::before {
           content: "\f0c5";
@@ -490,10 +487,12 @@ body {
 
   // Output Rules
   .output {
-    padding-top: 70px;
-    .content,
+    width: 100%;
+    .content {
+      justify-content: center;
+    }
+
     .copy-download {
-      width: 100% !important;
       justify-content: center;
       .copy {
         order: 2;
