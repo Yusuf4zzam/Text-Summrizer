@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 :root {
-  --main-color: #ff9800;
+  --main-color: #1c2130;
   --white: #fff;
   --dark: #222;
   --soft-dark: rgba(0, 0, 0, 0.2);
@@ -306,6 +306,7 @@ ul {
 .header-content h1 {
   width: 100%;
   font-size: 2.5em;
+  margin-bottom: 10px;
 }
 
 .header-content p {
@@ -316,6 +317,10 @@ ul {
 
 .form-box form {
   width: 70%;
+}
+
+.form-box form select {
+  text-align: center;
 }
 
 .form-box form select option {
@@ -506,6 +511,20 @@ ul {
 .form-box form .file-details p {
   clear: both;
   line-height: 2;
+}
+
+@media (max-width: 370px) {
+  .header-content h1 {
+    font-size: 25px !important;
+  }
+  .header-content p {
+    font-size: 14px !important;
+  }
+  .form-box label,
+  .form-box select {
+    width: 100% !important;
+    text-align: center;
+  }
 }
 
 .output {

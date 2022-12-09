@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Summarizer</title>
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -36,24 +36,24 @@
       <div class="container"> 
         <div class="header-content flex flex-center flex-wrap text-center">
           <h1 class="header">Text Summarizer</h1>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis molestias ipsam sit vitae sunt quibusdam mollitia cumque similique rem quidem?</p>
+          <p>To enter text to be summarized, please press “Enter Text” below and write your text to summarize.</p>
+          <p>To upload a document to be summarized, please press “Upload File”. Please make sure to upload either .txt or .pdf.</p>
+          <p>You can determine the number of sentences that you wish your summary to be limited to.</p>
         </div>
         <div class="form-box flex flex-center flex-wrap">
           <form action="">
             <div class="buttons flex flex-center flex-wrap">
               <label class="text-input" for="text">Enter Text</label>
               <label class="file-label" for="file">Upload File</label>
-              <select name="summarizeSize" value="Medium">
-                <option value="Short">Short </option>
-                <option value="Medium" selected>Medium </option>
-                <option value="Large">Large  </option>
+              <select name="summarizeSize">
+                <option disabled selected>Sentences Count </option>
               </select>
             </div>
             <div class="file-container"> 
               <input type="file" id="file" accept=".txt, .pdf">
             </div>
             <div class="input-container"> 
-              <textarea name="text" id="text" maxlength="3000" placeholder="Type Your Text"></textarea><span>0/3000</span>
+              <textarea name="text" id="text" placeholder="Type Your Text"></textarea><span>Sentences Count (0)</span>
             </div>
             <div class="error-handler"> 
               <p></p>

@@ -4,7 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Document
+        title Summarizer
         link(rel="stylesheet", href="css/all.min.css")
         link(rel="stylesheet", href="css/main.css")
     body.flex.flex-center.align-content-center.flex-wrap
@@ -41,24 +41,24 @@ html(lang="en")
             .container 
                 .header-content.flex.flex-center.flex-wrap.text-center
                     h1.header Text Summarizer
-                    p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Perspiciatis molestias ipsam sit vitae sunt quibusdam mollitia cumque similique rem quidem?
-                
+                    p To enter text to be summarized, please press “Enter Text” below and write your text to summarize.
+                    p To upload a document to be summarized, please press “Upload File”. Please make sure to upload either .txt or .pdf.
+                    p You can determine the number of sentences that you wish your summary to be limited to.
+
                 .form-box.flex.flex-center.flex-wrap
                     form(action="")
                         .buttons.flex.flex-center.flex-wrap
                             label.text-input(for="text") Enter Text
                             label.file-label(for="file") Upload File
-                            select(name="summarizeSize" value="Medium")
-                                option(value="Short") Short 
-                                option(value="Medium" selected) Medium 
-                                option(value="Large") Large  
+                            select(name="summarizeSize")
+                                option(disabled selected) Sentences Count 
 
                         .file-container 
                             input(type="file" id="file" accept=".txt, .pdf")
 
                         .input-container 
-                            textarea(name="text" id= "text" maxlength= "3000" placeholder="Type Your Text")
-                            span 0/3000
+                            textarea(name="text" id= "text" placeholder="Type Your Text")
+                            span Sentences Count (0)
                         
                         .error-handler 
                             p

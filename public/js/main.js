@@ -1,17 +1,25 @@
 // Get Select Box Value
 let selectBox = document.querySelector("form select");
 
-let selectBoxValue = "20";
+let selectBoxValue = "10";
+
+for (let i = 1; i <= 40; i++) {
+  // Create The Option Box
+  let optionBox = document.createElement("option");
+
+  // Set Value To The Option
+  optionBox.value = i;
+
+  // Set Text For The Options
+  optionBox.textContent = i;
+
+  selectBox.appendChild(optionBox);
+}
 
 selectBox.addEventListener("change", () => {
-  selectBoxValue =
-    selectBox.value == "Short"
-      ? "10"
-      : selectBox.value == "Medium"
-      ? "20"
-      : "30";
+  selectBoxValue = selectBox.value;
 
-  fileSize.textContent = `Summarize Size: ${selectBoxValue} Sentences`;
+  fileSize.textContent = `Summarize Size: ${selectBox.value} Sentences`;
 });
 
 // Settings Box
@@ -111,12 +119,20 @@ fileButton.addEventListener("click", () => {
 });
 
 let submitButtonContainer = document.querySelector(".submit-container");
+let regexSentences = /\w+(\.|\?)/gi;
+let inputLength;
 
 textareaValue.addEventListener("input", function () {
-  inputMaxLength.textContent = `${this.value.length}/3000`;
+  inputLength = this.value.split(" ").join("").match(regexSentences);
+
+  if (inputLength != null && inputLength.length > 0) {
+    inputMaxLength.textContent = `Sentences Count (${inputLength.length})`;
+  } else {
+    inputMaxLength.textContent = `Sentences Count (0)`;
+  }
 
   // Check If The User Filled Text Or File
-  if (this.value.length > 1000) {
+  if (inputLength != null && inputLength.length >= 15) {
     submitButtonContainer.classList.add("active");
   } else {
     submitButtonContainer.classList.remove("active");
@@ -159,27 +175,82 @@ submitinputTextBtn.addEventListener("click", async (e) => {
 
   let finallDataText;
 
-  removeAndAddActive(
-    [
-      submitButtonContainer,
-      inputTextContainer,
-      fileDetails,
-      errorHandler,
-      outputContent,
-    ],
-    "remove"
-  );
+  removeAndAddActive([errorHandler, outputContent], "remove");
 
   if (inputFile.files[0]) {
     // Text Files
     if (inputFile.files[0].type == "text/plain") {
       let fr = new FileReader();
 
+      let SentencesCount;
+
       fr.onload = function () {
-        removeAndAddActive([output], "add");
+        SentencesCount = fr.result.split(" ").join("").match(regexSentences);
 
-        dataText = fr.result;
+        if (SentencesCount.length <= selectBoxValue) {
+          errorHandler.classList.add("active");
 
+          errorHandler.textContent =
+            "The Selected Sentences Count Cannot Be Bigger Than Or Equal To The Uploaded Sentences";
+        } else {
+          dataText = fr.result;
+
+          inputFile.value = "";
+
+          removeAndAddActive([submitButtonContainer, fileDetails], "remove");
+
+          let formdata = new FormData();
+          formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
+          formdata.append("txt", dataText);
+          formdata.append("sentences", selectBoxValue);
+
+          let requestOptions = {
+            method: "post",
+            body: formdata,
+            redirect: "follow",
+          };
+
+          fetch(
+            "https://api.meaningcloud.com/summarization-1.0",
+            requestOptions
+          )
+            .then((response) => response.text())
+            .then((result) => {
+              removeAndAddActive([output], "add");
+
+              outputContent.textContent = JSON.parse(result).summary;
+            });
+        }
+      };
+
+      fr.readAsText(inputFile.files[0]);
+    }
+
+    // PDF Files
+    else {
+      let formData = new FormData();
+      formData.append("inputFile", inputFile.files[0]);
+
+      let SentencesCount;
+
+      await fetch("/extract-text", {
+        method: "post",
+
+        body: formData,
+      })
+        .then((res) => res.text())
+        .then((data) => {
+          SentencesCount = data.split(" ").join("").match(regexSentences);
+
+          dataText = data;
+        });
+
+      if (SentencesCount.length <= selectBoxValue) {
+        errorHandler.classList.add("active");
+
+        errorHandler.textContent =
+          "The Selected Sentences Count Cannot Be Bigger Than Or Equal To The Uploaded Sentences";
+      } else {
         let formdata = new FormData();
         formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
         formdata.append("txt", dataText);
@@ -191,57 +262,22 @@ submitinputTextBtn.addEventListener("click", async (e) => {
           redirect: "follow",
         };
 
-        fetch("https://api.meaningcloud.com/summarization-1.0", requestOptions)
+        await fetch(
+          "https://api.meaningcloud.com/summarization-1.0",
+          requestOptions
+        )
           .then((response) => response.text())
-          .then(
-            (result) => (outputContent.textContent = JSON.parse(result).summary)
-          );
-      };
+          .then((result) => {
+            finallDataText = JSON.parse(result).summary;
+          });
 
-      fr.readAsText(inputFile.files[0]);
+        outputContent.textContent = finallDataText;
 
-      inputFile.value = "";
+        output.classList.add("active");
 
-      removeAndAddActive([submitButtonContainer, fileDetails], "remove");
+        inputFile.value = "";
+      }
     }
-
-    // PDF Or DOCX Files
-    else {
-      let formData = new FormData();
-      formData.append("inputFile", inputFile.files[0]);
-
-      await fetch("/extract-text", {
-        method: "post",
-
-        body: formData,
-      })
-        .then((res) => res.text())
-        .then((data) => (dataText = data));
-
-      let formdata = new FormData();
-      formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
-      formdata.append("txt", dataText);
-      formdata.append("sentences", selectBoxValue);
-
-      let requestOptions = {
-        method: "post",
-        body: formdata,
-        redirect: "follow",
-      };
-
-      await fetch(
-        "https://api.meaningcloud.com/summarization-1.0",
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((result) => (finallDataText = JSON.parse(result).summary));
-
-      outputContent.textContent = finallDataText;
-
-      output.classList.add("active");
-    }
-
-    inputFile.value = "";
   } else {
     removeAndAddActive([submitButtonContainer, inputTextContainer], "remove");
 
