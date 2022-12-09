@@ -191,7 +191,7 @@ submitinputTextBtn.addEventListener("click", async (e) => {
           errorHandler.classList.add("active");
 
           errorHandler.textContent =
-            "The Selected Sentences Count Cannot Be Bigger Than Or Equal To The Uploaded Sentences";
+            "The selected sentences count cannot be BIGGER than or EQUAL to the sentences count of the uploaded TEXT file.";
         } else {
           dataText = fr.result;
 
@@ -249,7 +249,7 @@ submitinputTextBtn.addEventListener("click", async (e) => {
         errorHandler.classList.add("active");
 
         errorHandler.textContent =
-          "The Selected Sentences Count Cannot Be Bigger Than Or Equal To The Uploaded Sentences";
+          "The selected sentences count cannot be BIGGER than or EQUAL to the sentences count of the uploaded PDF file.";
       } else {
         let formdata = new FormData();
         formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
@@ -275,37 +275,51 @@ submitinputTextBtn.addEventListener("click", async (e) => {
 
         output.classList.add("active");
 
+        removeAndAddActive([submitButtonContainer, fileDetails], "remove");
+
         inputFile.value = "";
       }
     }
   } else {
-    removeAndAddActive([submitButtonContainer, inputTextContainer], "remove");
+    let SentencesCount = textareaValue.value
+      .split(" ")
+      .join("")
+      .match(regexSentences);
 
-    let formdata = new FormData();
-    formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
-    formdata.append("txt", textareaValue.value);
-    formdata.append("sentences", selectBoxValue);
+    if (SentencesCount.length <= selectBoxValue) {
+      errorHandler.classList.add("active");
 
-    let requestOptions = {
-      method: "post",
-      body: formdata,
-      redirect: "follow",
-    };
+      errorHandler.textContent =
+        "The selected sentences count cannot be BIGGER Than Or EQUAL to the sentences count of the Entered TEXT.";
+    } else {
+      removeAndAddActive([submitButtonContainer, inputTextContainer], "remove");
 
-    await fetch(
-      "https://api.meaningcloud.com/summarization-1.0",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then(
-        (result) => (outputContent.textContent = JSON.parse(result).summary)
-      );
+      let formdata = new FormData();
+      formdata.append("key", "cba95b0a948bea81138fcaba921fee5f");
+      formdata.append("txt", textareaValue.value);
+      formdata.append("sentences", selectBoxValue);
 
-    textareaValue.value = "";
+      let requestOptions = {
+        method: "post",
+        body: formdata,
+        redirect: "follow",
+      };
 
-    inputMaxLength.textContent = "0/3000";
+      await fetch(
+        "https://api.meaningcloud.com/summarization-1.0",
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then(
+          (result) => (outputContent.textContent = JSON.parse(result).summary)
+        );
 
-    output.classList.add("active");
+      textareaValue.value = "";
+
+      inputMaxLength.textContent = "Sentences Count (0)";
+
+      output.classList.add("active");
+    }
   }
 });
 

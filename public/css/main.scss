@@ -6,6 +6,9 @@
 
 // Loading Box Rules
 .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   left: 0;
   top: 0;
@@ -48,10 +51,7 @@
     border-radius: 50%;
     border: 4px solid var(--white);
     border-style: solid dotted solid dotted;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     z-index: 9999999999999999999999;
     animation: rotate 2s infinite linear;
     transition: 0.3s;

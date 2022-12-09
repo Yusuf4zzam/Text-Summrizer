@@ -88,6 +88,15 @@ ul {
 }
 
 .loading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   position: absolute;
   left: 0;
   top: 0;
@@ -134,11 +143,7 @@ ul {
   border-radius: 50%;
   border: 4px solid var(--white);
   border-style: solid dotted solid dotted;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  position: relative;
   z-index: 9999999999999999999999;
   -webkit-animation: rotate 2s infinite linear;
           animation: rotate 2s infinite linear;
